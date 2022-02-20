@@ -1,0 +1,143 @@
+class Params
+{
+	class Daytime
+	{
+		title = "Time of day";
+		texts[] = {"Morning","Day","Evening","Night"};
+		values[] = {6,12,18,0};
+		default = 12;
+		function = "BIS_fnc_paramDaytime";
+	};
+
+	class Weather
+	{
+		title = "Weather";
+		texts[] = {"Sunny","Overcast","Rain","Storm"};
+		values[] = {0,70,90,100};
+		default = 0;
+		function = "BIS_fnc_paramWeather";
+	};
+
+	class PlayerBinoculars
+	{
+		title = "Binoculars";
+		texts[] = {"None","Binoculars", "Rangefinder"};
+		values[] = {0,1,2};
+		default = 1;
+	};
+
+	class PlayerCompass
+	{
+		title = "Compass";
+		texts[] = {"No","Yes"};
+		values[] = {0,1};
+		default = 1;
+	};
+
+	class PlayerMapTools
+	{
+		title = "Map Tools (Only has an effect if ACE is loaded)";
+		texts[] = {"No","Yes"};
+		values[] = {0,1};
+		default = 1;
+	};
+
+	class MinimumDistance
+	{
+		title = "Minimum distance between points";
+		texts[] = {"100m", "250m", "500m", "1000m", "2500m"};
+		values[] = {100, 250, 500, 1000, 2500};
+		default = 250;
+	};
+
+	class MaximumDistance
+	{
+		title = "Maximum distance between points (Must be greater than or equal to the minimum)";
+		texts[] = {"100m", "250m", "500m", "1000m", "2500m"};
+		values[] = {100, 250, 500, 1000, 2500};
+		default = 500;
+	};
+
+	class CheckpointRadius
+	{
+		title = "Minimum distance to activate a checkpoint";
+		texts[] = {"1m", "2m", "5m", "10m"};
+		values[] = {1, 2, 5, 10};
+		default = 2;
+	};
+
+	class NumberCheckpoints
+	{
+		title = "Number of checkpoints";
+		values[] = {3, 5, 7, 10, 15, 20};
+		default = 5;
+	};
+
+	class ShowStart
+	{
+		title = "Show starting position";
+		texts[] = {"No","Yes"};
+		values[] = {0,1};
+		default = 1;
+	};
+
+	class TraverseMode
+	{
+		title = "Traversal mode";
+		texts[] = {"Linear","Any Order"};
+		values[] = {0,1};
+		default = 1;
+	};
+
+	class CheckpointMarker
+	{
+		title = "Checkpoint marker";
+		texts[] = {"None", "Small Flag", "Large Flag"};
+		values[] = {0,1,2};
+		default = 1;
+	};
+
+	class AdditionalMarker
+	{
+		title = "Additional checkpoint marker";
+		texts[] = {"None", "Coloured Smoke", "Chemlight", "Strong Light"};
+		values[] = {0,1,2,3};
+		default = 0;
+	};
+
+
+	// I was really hoping to avoid having predefined courses, and use some method to seed the random generator for BIS_fnc_randomPos instead
+	// Unfortunately, there doesn't seem to be a way to do it (easily)
+	// So instead, here are some pre-designed courses to compete against as well
+	// Annoyingly, the description for each course has to be set manually for each new map
+	class Course
+	{
+		title = "Course (if not 'Random', this will overwrite some of the above settings)";
+		texts[] = {
+			"Random",
+			"Course #1 (Easy, Short, 6 checkpoints, Rural navigation)",
+			"Course #2 (Easy, Short, 8 checkpoints, Urban navigation)",
+			"Course #3 (Hard, Far, 5 checkpoints, Wetlands navigation)",
+			"Course #4 (Hard, Far, 7 checkpoints, Mountain navigation)"
+		};
+		values[] = {0,1,2,3,4};
+		default = 0;
+	};
+
+	// class CourseSeed
+	// {
+	// 	title = "Course seed: random generates a random course; prompt allows you to specify a seed for the course";
+	// 	texts[] = {"Random", "Prompt"};
+	// 	values[] = {0,1};
+	// 	default = 0;
+	// };
+
+	class ShowPath
+	{
+		title = "Track player's path and show:";
+		texts[] = {"At the end of the course", "After each checkpoint"};
+		values[] = {1,2};
+		default = 2;
+	};
+
+};
