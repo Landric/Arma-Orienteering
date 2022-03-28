@@ -29,8 +29,8 @@ if( MaxDist < MinDist ) then {
 };
 
 //Add a little bit of "wiggle room"
-MinDist = MinDist - (MinDist * 0.1);
-MaxDist = MaxDist + (MaxDist * 0.1);
+MinDist = MinDist - (MinDist * 0.05);
+MaxDist = MaxDist + (MaxDist * 0.05);
 
 
 CheckpointMarker = switch( ["CheckpointMarker", 1] call BIS_fnc_getParamValue ) do {
@@ -82,7 +82,7 @@ travelMarkers = [];
 travelCount = 0;
 playersLastPos = getpos player;;
 
-FNC_newCourse = {
+LND_fnc_newCourse = {
 
 
 	//TODO: PROMPT FOR RANDOM SEED
@@ -167,8 +167,8 @@ FNC_newCourse = {
 	// So instead, there are some predefined courses using invisible map markers, with the following naming scheme:
 	// course01_1, course01_2, course01_3...
 	// course02_1, course02_2, course02_3...
-	// etc.
-	//TODO: This currently works for up to 99 predefined courses
+	// etc. (Note the leading zeros for the course number!)
+	// TODO: This currently works for up to 99 predefined courses, which is probably plenty
 	checkpoints = switch( CourseNumber ) do {
 		case 0: { checkpoints };
 		default {
@@ -203,12 +203,12 @@ FNC_newCourse = {
 
 	// Activate first checkpoint (or all checkpoints if TraversalMode is Any Order)
 	if( (["TraverseMode", 1] call BIS_fnc_getParamValue) == 0) then {
-		[0, checkpoints select 0] call FNC_activateCheckpoint;
+		[0, checkpoints select 0] call LND_fnc_activateCheckpoint;
 		"task0" call BIS_fnc_taskSetCurrent;
 	}
 	else{
 		for "_i" from 0 to NumberCheckpoints-1 do {
-			[_i, checkpoints select _i] call FNC_activateCheckpoint;
+			[_i, checkpoints select _i] call LND_fnc_activateCheckpoint;
 		}
 	};
 
@@ -222,7 +222,7 @@ FNC_newCourse = {
 
 
 
-FNC_activateCheckpoint = {
+LND_fnc_activateCheckpoint = {
 	params ["_positionIndex", "_position"];
 
 	// Create task
@@ -237,7 +237,7 @@ FNC_activateCheckpoint = {
 	_r = ["CheckpointRadius", 2] call BIS_fnc_getParamValue;
 	_trg setTriggerArea [_r, _r, 0, false];
 	_trg setTriggerActivation ["ANYPLAYER", "PRESENT", false];
-	_trg setTriggerStatements ["this", format ["[%1] call FNC_completeCheckpoint;", _positionIndex], ""];
+	_trg setTriggerStatements ["this", format ["[%1] call LND_fnc_completeCheckpoint;", _positionIndex], ""];
 
 
 	// Activate additional marker
@@ -245,7 +245,7 @@ FNC_activateCheckpoint = {
 };
 
 
-FNC_completeCheckpoint = {
+LND_fnc_completeCheckpoint = {
 	params ["_positionIndex"];
 
 	// Complete task
@@ -278,12 +278,12 @@ FNC_completeCheckpoint = {
 	if(["TraverseMode", 1] call BIS_fnc_getParamValue == 0) then {
 		// If the next positionIndex surpasses the number of checkpoints, then end the course
 		if(_positionIndex + 1 >= NumberCheckpoints) then {
-			call FNC_endCourse;
+			call LND_fnc_endCourse;
 		}
 		//Otherwise, activate the next checkpoint
 		else{
 			if(["TraverseMode", 1] call BIS_fnc_getParamValue == 0) then {
-				[_positionIndex+1, checkpoints select _positionIndex+1] call FNC_activateCheckpoint;
+				[_positionIndex+1, checkpoints select _positionIndex+1] call LND_fnc_activateCheckpoint;
 			};
 		};
 	}
@@ -299,12 +299,12 @@ FNC_completeCheckpoint = {
 		} forEach (player call BIS_fnc_tasksUnit);
 
 		if( completed ) then {
-			call FNC_endCourse;
+			call LND_fnc_endCourse;
 		};
 	};
 };
 
-FNC_endCourse = {
+LND_fnc_endCourse = {
 
 	BIS_stopTimer = true;
 
@@ -336,7 +336,7 @@ FNC_endCourse = {
 		"end1" setDebriefingText ["Course Complete", endText];
 		"end1" call BIS_fnc_endMission;
 		// TODO: Restart instead? Currently experiencing an issue with recreating the tasks (perhaps due to reusing the IDs?)
-		//call FNC_newCourse;
+		//call LND_fnc_newCourse;
 	}	
 };
 
@@ -344,7 +344,7 @@ FNC_endCourse = {
 // I don't know why, but spawn BIS_fnc_VRTimer won't work without this initial sleep. So...
 [] spawn {
 	sleep 0.1;
-	call FNC_newCourse;
+	call LND_fnc_newCourse;
 };
 
 
