@@ -3,7 +3,7 @@
 
  If you wish to use this with a map not [already configured here](https://steamcommunity.com/id/landr1c/myworkshopfiles/?appid=107410 "Landric's Steam Workshop"), just add these files to your mission folder (e.g. `Orienteering.MyMap`).
 
- Custom courses can be predefined using markers in the editor in the following format: `course1` to designate the start location, and then `course1_1`, `course1_2`, `course1_3`, etc. to designate each of the checkpoints. Make sure to set the alpha of the markers to 0%.
+ Custom courses can be predefined using markers in the editor in the following format: `course01` to designate the start location, and then `course01_1`, `course01_2`, `course01_3`, etc. to designate each of the checkpoints. Note the leading '0', and make sure to set the alpha of the markers to 0%.
 
 Then update the following code-block in `description.ext` in order to allow players to chose from your custom courses:
 
